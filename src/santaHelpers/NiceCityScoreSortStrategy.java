@@ -1,0 +1,106 @@
+package santahelpers;
+
+import common.Constants;
+import enums.Cities;
+import santalists.Children;
+
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashMap;
+
+public class NiceCityScoreSortStrategy implements SortStrategy{
+    private HashMap<String, CitiesAverage> citiesAverage = new HashMap<>();
+
+    /**
+     * Constructors
+     */
+    public NiceCityScoreSortStrategy() {
+    }
+
+    public NiceCityScoreSortStrategy(final HashMap<String, CitiesAverage> citiesAverage) {
+        this.citiesAverage = citiesAverage;
+    }
+
+    /**
+     * Getters and Setters
+     */
+
+    /**
+     * Getter for hashmap
+     * @return the map
+     */
+    public HashMap<String, CitiesAverage> getCitiesAverage() {
+        return citiesAverage;
+    }
+
+    /**
+     * Setter for hashmap
+     * @param citiesAverage to set the map
+     */
+    public void setCitiesAverage(final HashMap<String, CitiesAverage> citiesAverage) {
+        this.citiesAverage = citiesAverage;
+    }
+
+    /**
+     * Additional methods
+     */
+
+    /**
+     * Creates new key-value positions in the map that contain
+     * all the city names as keys and new array lists with
+     * average children scores
+     * */
+    public void addAllCities() {
+        for (Cities c : Cities.values()) {
+            citiesAverage.put(c.name(), new CitiesAverage(new ArrayList<>(), Constants.START_AVERAGE_SCORE));
+        }
+    }
+
+    /**
+     * Calculates all the average scores for each city based
+     * on the array of nice scores
+     */
+    public void calculateAllScores() {
+        for (String key : citiesAverage.keySet()) {
+            citiesAverage.get(key).calculateAverage();
+        }
+        System.out.println(citiesAverage);
+
+    }
+
+    /**
+     * Adds new score in the array list
+     */
+    public void putScore(final double score, final String city) {
+        citiesAverage.get(score).addScore(score);
+    }
+
+    /**
+     * Creates a new array of children that are sorted after nice
+     * city score
+     * @return the sorted array
+     */
+    @Override
+    public ArrayList<Children> sortChildren(ArrayList<Children> children) {
+        ArrayList<Children> newArr = new ArrayList<>(children);
+        newArr.sort(new Comparator<Children>() {
+            @Override
+            public int compare(final Children o1, final Children o2) {
+                if (o1.getCity().equals(o2.getCity())) {
+                    return Integer.compare(o1.getId(), o2.getId());
+                }
+
+                if (citiesAverage.get(o1.getCity().name()).getAverageScore()
+                        == citiesAverage.get(o2.getCity().name()).getAverageScore()) {
+                    return o1.getCity().name().compareTo(o2.getCity().name());
+                }
+
+                return (-1)
+                        * Double.compare(citiesAverage.get(o1.getCity().name()).getAverageScore(),
+                        citiesAverage.get(o2.getCity().name()).getAverageScore());
+            }
+        });
+
+        return newArr;
+    }
+}

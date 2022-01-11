@@ -1,9 +1,8 @@
 package santalists;
 
 import common.Constants;
-import enums.Category;
 import enums.Cities;
-import santaHelpers.Elves;
+import santahelpers.Elves;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -34,9 +33,10 @@ public class Children {
     public Children() {
     }
 
-    public Children(int id, String lastName, String firstName, int age, Cities city,
-                    ArrayList<Double> niceScore, ArrayList<String> giftsPreferences,
-                    double niceScoreBonus, Elves elf) {
+    public Children(final int id, final String lastName, final String firstName,
+                    final int age, final Cities city,
+                    final ArrayList<Double> niceScore, final ArrayList<String> giftsPreferences,
+                    final double niceScoreBonus, final Elves elf) {
         this.id = id;
         this.lastName = lastName;
         this.firstName = firstName;
@@ -200,7 +200,7 @@ public class Children {
      * Setter for nice score bonus
      * @param niceScoreBonus score bonus
      */
-    public void setNiceScoreBonus(double niceScoreBonus) {
+    public void setNiceScoreBonus(final double niceScoreBonus) {
         this.niceScoreBonus = niceScoreBonus;
     }
 

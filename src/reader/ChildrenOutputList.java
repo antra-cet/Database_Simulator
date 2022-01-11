@@ -43,7 +43,7 @@ public class ChildrenOutputList {
     public void sortChildrenOutput() {
         children.sort(new Comparator<ChildrenOutput>() {
             @Override
-            public int compare(ChildrenOutput o1, ChildrenOutput o2) {
+            public int compare(final ChildrenOutput o1, final ChildrenOutput o2) {
                 return Integer.compare(o1.getId(), o2.getId());
             }
         });

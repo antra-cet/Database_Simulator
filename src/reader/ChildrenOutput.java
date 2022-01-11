@@ -228,8 +228,8 @@ public class ChildrenOutput {
      * The method which adds a gift to the received gift list
      * @param gift the gift that is to be added
      */
-    public void addReceivedGifts(final Gifts gift) {
-        receivedGifts.add(new GiftsOutput(gift));
+    public void addReceivedGifts(final GiftsOutput gift) {
+        receivedGifts.add(gift);
     }
 
 

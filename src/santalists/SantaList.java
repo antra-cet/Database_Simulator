@@ -1,6 +1,12 @@
 package santalists;
 
-import java.util.*;
+import santahelpers.CitiesAverage;
+import santahelpers.SortStrategy;
+
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Objects;
 
 public class SantaList {
     /**
@@ -132,6 +138,33 @@ public class SantaList {
     }
 
     /**
+     * Finding the perfect gift for an elf to give to a child
+     * @param gift the category in which it should be
+     * @return the best gift for the child given by the yellow elf
+     */
+    public Gifts findYellowGift(final String gift) {
+        // Setting the two on standby values
+        double price = -1;
+        Gifts bestGift = null;
+
+        // Iterating through the lst of gifts
+        for (Gifts g : santaGiftsList) {
+            if (Objects.equals(gift, g.getCategory())) {
+                // Changing the values if found a better gift
+                if (price == -1) {
+                    price = g.getPrice();
+                    bestGift = g;
+                } else if (price > g.getPrice()) {
+                    price = g.getPrice();
+                    bestGift = g;
+                }
+            }
+        }
+
+        return bestGift;
+    }
+
+    /**
      * Returning a child after its id
      * @param id the id of the child
      * @return the child if found or null if not
@@ -146,11 +179,22 @@ public class SantaList {
         return null;
     }
 
+    /**
+     * Method to apply the strategy on the list of children
+     * @param */
+    public ArrayList<Children> sortChildren(SortStrategy sortStrategy) {
+        return sortStrategy.sortChildren(children);
+    }
+
+    /**
+     * Creates a new array of children that are sorted after id
+     * @return the sorted array
+     */
     public ArrayList<Children> getChildrenAfterId() {
         ArrayList<Children> newArr = new ArrayList<>(children);
         newArr.sort(new Comparator<Children>() {
             @Override
-            public int compare(Children o1, Children o2) {
+            public int compare(final Children o1, final Children o2) {
                 return Integer.compare(o1.getId(), o2.getId());
             }
         });
@@ -158,28 +202,50 @@ public class SantaList {
         return newArr;
     }
 
+    /**
+     * Creates a new array of children that are sorted after nice score
+     * @return the sorted array
+     */
     public ArrayList<Children> getChildrenAfterNiceScore() {
         ArrayList<Children> newArr = new ArrayList<>(children);
         newArr.sort(new Comparator<Children>() {
             @Override
-            public int compare(Children o1, Children o2) {
+            public int compare(final Children o1, final Children o2) {
                 if (o1.getAverageScore() == o2.getAverageScore()) {
                     return Integer.compare(o1.getId(), o2.getId());
                 }
 
-                return (-1) * Double.compare(o1.getAverageScore(), o2.getAverageScore());
+                return (-1) * Double.compare(o1.getAverageScore(),
+                        o2.getAverageScore());
             }
         });
 
         return newArr;
     }
 
-    public ArrayList<Children> getChildrenAfterNiceCityScore() {
+    /**
+     * Creates a new array of children that are sorted after nice
+     * city score
+     * @return the sorted array
+     */
+    public ArrayList<Children> getChildrenAfterNiceCityScore(final HashMap<String,
+            CitiesAverage> citiesAverage) {
         ArrayList<Children> newArr = new ArrayList<>(children);
         newArr.sort(new Comparator<Children>() {
             @Override
-            public int compare(Children o1, Children o2) {
-                return Integer.compare(o1.getId(), o2.getId());
+            public int compare(final Children o1, final Children o2) {
+                if (o1.getCity().equals(o2.getCity())) {
+                    return Integer.compare(o1.getId(), o2.getId());
+                }
+
+                if (citiesAverage.get(o1.getCity().name()).getAverageScore()
+                        == citiesAverage.get(o2.getCity().name()).getAverageScore()) {
+                    return o1.getCity().name().compareTo(o2.getCity().name());
+                }
+
+                return (-1)
+                        * Double.compare(citiesAverage.get(o1.getCity().name()).getAverageScore(),
+                        citiesAverage.get(o2.getCity().name()).getAverageScore());
             }
         });
 

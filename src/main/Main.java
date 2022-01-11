@@ -7,18 +7,15 @@ import reader.ChildrenOutput;
 import reader.ChildrenOutputList;
 import reader.Input;
 import reader.Output;
+import santahelpers.*;
 import santalists.Changes;
 import santalists.Children;
 import santalists.Gifts;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
+import java.util.HashMap;
 import java.util.Objects;
 
 /**
@@ -83,7 +80,8 @@ public final class Main {
         ObjectMapper outObjectMapper = new ObjectMapper();
         Output output = new Output();
 
-        // Setting the initial strategy to "id"
+        // Setting the initial strategy to "id" and having an
+        // additional array list for the cities averages
         String strategy = "id";
 
         // Iterating through years
@@ -95,8 +93,13 @@ public final class Main {
             // Creating the new list for that year
             output.addYear(new ChildrenOutputList());
 
+            // Creating a new hashmap for cities averages
+            NiceCityScoreSortStrategy cityScoreSortStrategy = new NiceCityScoreSortStrategy();
+            cityScoreSortStrategy.addAllCities();
+
             // Iterating through children to calculate the average scores and
-            // to remove the young adults
+            // to remove the young adults and calculating each average score
+            // for the cities
             for (int j = 0; j < input.getInitialData().getChildren().size(); j++) {
                 Children c = input.getInitialData().getChildren().get(j);
                 c.setAgeCategory();
@@ -107,15 +110,22 @@ public final class Main {
                 } else {
                     c.calculateAverageNiceScore();
                     averageSum += c.getAverageScore();
+                    cityScoreSortStrategy.putScore(c.getAverageScore(),
+                            c.getCity().name());
                 }
             }
+            // Calculating the budget unit
             budgetUnit = input.getSantaBudget() / averageSum;
+
+            // Calculating the average score for each city
+            cityScoreSortStrategy.calculateAllScores();
 
             // Changing the children array
             ArrayList<Children> sortedChildrenArray = switch (strategy) {
-                case "id" -> input.getInitialData().getChildrenAfterId();
-                case "niceScore" -> input.getInitialData().getChildrenAfterNiceScore();
-                case "niceScoreCity" -> input.getInitialData().getChildrenAfterNiceCityScore();
+                case "id" -> input.getInitialData().sortChildren(new IdSortStrategy());
+                case "niceScore" -> input.getInitialData().sortChildren(new NiceScoreSortStrategy());
+                case "niceScoreCity" ->
+                        input.getInitialData().sortChildren(new NiceCityScoreSortStrategy());
                 default -> null;
             };
 
@@ -123,7 +133,7 @@ public final class Main {
             assert sortedChildrenArray != null;
             for (Children c : sortedChildrenArray) {
                 // Calculating the assigned budget for each child
-                double assignedBudget = c.getAverageScore() * budgetUnit;
+                double assignedBudget = Elves.pickElfAverage(c, budgetUnit);
 
                 // Creating a new child of type ChildrenOutput
                 ChildrenOutput newChild = new ChildrenOutput(c, assignedBudget);
@@ -141,6 +151,16 @@ public final class Main {
                         }
                     } else {
                         break;
+                    }
+                }
+                // Verifying if the child had a yellow elf assigned
+                if (c.getElf().getType().equals("yellow")
+                        && newChild.getReceivedGifts().isEmpty()) {
+                    Gifts newGift =
+                            input.getInitialData().findYellowGift(c.getGiftsPreferences().get(0));
+                    if (newGift != null && newGift.getQuantity() > 0) {
+                        newGift.setQuantity(newGift.getQuantity() - 1);
+                        newChild.addReceivedGifts(newGift);
                     }
                 }
 

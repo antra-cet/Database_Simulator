@@ -1,6 +1,6 @@
 package santalists;
 
-import santaHelpers.Elves;
+import santahelpers.Elves;
 
 import java.util.ArrayList;
 
@@ -19,7 +19,8 @@ public class ChildrenUpdates {
     public ChildrenUpdates() {
     }
 
-    public ChildrenUpdates(int id, Double niceScore, ArrayList<String> giftsPreferences, Elves elf) {
+    public ChildrenUpdates(final int id, final Double niceScore,
+                           final ArrayList<String> giftsPreferences, final Elves elf) {
         this.id = id;
         this.niceScore = niceScore;
         this.giftsPreferences = giftsPreferences;
