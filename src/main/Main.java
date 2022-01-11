@@ -3,10 +3,7 @@ package main;
 import checker.Checker;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import common.Constants;
-import reader.ChildrenOutput;
-import reader.ChildrenOutputList;
-import reader.Input;
-import reader.Output;
+import reader.*;
 import santahelpers.*;
 import santalists.Changes;
 import santalists.Children;
@@ -94,7 +91,7 @@ public final class Main {
             output.addYear(new ChildrenOutputList());
 
             // Creating a new hashmap for cities averages
-            NiceCityScoreSortStrategy cityScoreSortStrategy = new NiceCityScoreSortStrategy();
+            NiceCityScoreSortStrategy cityScoreSortStrategy = new NiceCityScoreSortStrategy(new HashMap<>());
             cityScoreSortStrategy.addAllCities();
 
             // Iterating through children to calculate the average scores and
@@ -125,7 +122,7 @@ public final class Main {
                 case "id" -> input.getInitialData().sortChildren(new IdSortStrategy());
                 case "niceScore" -> input.getInitialData().sortChildren(new NiceScoreSortStrategy());
                 case "niceScoreCity" ->
-                        input.getInitialData().sortChildren(new NiceCityScoreSortStrategy());
+                        input.getInitialData().sortChildren(cityScoreSortStrategy);
                 default -> null;
             };
 
@@ -146,7 +143,7 @@ public final class Main {
                         Gifts newGift = input.getInitialData().findGift(giftCategory);
                         if (newGift != null && assignedBudget > newGift.getPrice()) {
                             newGift.setQuantity(newGift.getQuantity() - 1);
-                            newChild.addReceivedGifts(newGift);
+                            newChild.addReceivedGifts(new GiftsOutput(newGift));
                             assignedBudget -= newGift.getPrice();
                         }
                     } else {
@@ -160,7 +157,7 @@ public final class Main {
                             input.getInitialData().findYellowGift(c.getGiftsPreferences().get(0));
                     if (newGift != null && newGift.getQuantity() > 0) {
                         newGift.setQuantity(newGift.getQuantity() - 1);
-                        newChild.addReceivedGifts(newGift);
+                        newChild.addReceivedGifts(new GiftsOutput(newGift));
                     }
                 }
 

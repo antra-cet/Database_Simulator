@@ -54,6 +54,8 @@ public class NiceCityScoreSortStrategy implements SortStrategy{
         for (Cities c : Cities.values()) {
             citiesAverage.put(c.name(), new CitiesAverage(new ArrayList<>(), Constants.START_AVERAGE_SCORE));
         }
+
+        System.out.println(citiesAverage);
     }
 
     /**
@@ -64,15 +66,13 @@ public class NiceCityScoreSortStrategy implements SortStrategy{
         for (String key : citiesAverage.keySet()) {
             citiesAverage.get(key).calculateAverage();
         }
-        System.out.println(citiesAverage);
-
     }
 
     /**
      * Adds new score in the array list
      */
     public void putScore(final double score, final String city) {
-        citiesAverage.get(score).addScore(score);
+        citiesAverage.get(city).addScore(score);
     }
 
     /**
@@ -88,6 +88,11 @@ public class NiceCityScoreSortStrategy implements SortStrategy{
             public int compare(final Children o1, final Children o2) {
                 if (o1.getCity().equals(o2.getCity())) {
                     return Integer.compare(o1.getId(), o2.getId());
+                }
+
+                if (citiesAverage.get(o1.getCity().name()) == null) {
+                    System.out.println(o1.getCity().name());
+                    System.out.println(citiesAverage);
                 }
 
                 if (citiesAverage.get(o1.getCity().name()).getAverageScore()

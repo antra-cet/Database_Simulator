@@ -6,5 +6,5 @@ import java.util.ArrayList;
 
 public interface SortStrategy {
 
-    public void sortChildren(final ArrayList<Children> children);
+    public ArrayList<Children> sortChildren(final ArrayList<Children> children);
 }
