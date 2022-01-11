@@ -1,6 +1,7 @@
 package reader;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 
 public class ChildrenOutputList {
 
@@ -39,6 +40,14 @@ public class ChildrenOutputList {
         this.children = children;
     }
 
+    public void sortChildrenOutput() {
+        children.sort(new Comparator<ChildrenOutput>() {
+            @Override
+            public int compare(ChildrenOutput o1, ChildrenOutput o2) {
+                return Integer.compare(o1.getId(), o2.getId());
+            }
+        });
+    }
 
     /**
      * Additional methods

@@ -16,7 +16,9 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.Objects;
 
 /**
@@ -77,10 +79,12 @@ public final class Main {
         if (input == null) {
             return;
         }
-
         // Preparing the output
         ObjectMapper outObjectMapper = new ObjectMapper();
         Output output = new Output();
+
+        // Setting the initial strategy to "id"
+        String strategy = "id";
 
         // Iterating through years
         for (int i = 0; i <= input.getNumberOfYears(); i++) {
@@ -107,8 +111,17 @@ public final class Main {
             }
             budgetUnit = input.getSantaBudget() / averageSum;
 
-            // Iterating again through children and making the necessary changes
-            for (Children c : input.getInitialData().getChildren()) {
+            // Changing the children array
+            ArrayList<Children> sortedChildrenArray = switch (strategy) {
+                case "id" -> input.getInitialData().getChildrenAfterId();
+                case "niceScore" -> input.getInitialData().getChildrenAfterNiceScore();
+                case "niceScoreCity" -> input.getInitialData().getChildrenAfterNiceCityScore();
+                default -> null;
+            };
+
+            // Iterating through the children
+            assert sortedChildrenArray != null;
+            for (Children c : sortedChildrenArray) {
                 // Calculating the assigned budget for each child
                 double assignedBudget = c.getAverageScore() * budgetUnit;
 
@@ -122,6 +135,7 @@ public final class Main {
                         // Finding the assigned gift for the child
                         Gifts newGift = input.getInitialData().findGift(giftCategory);
                         if (newGift != null && assignedBudget > newGift.getPrice()) {
+                            newGift.setQuantity(newGift.getQuantity() - 1);
                             newChild.addReceivedGifts(newGift);
                             assignedBudget -= newGift.getPrice();
                         }
@@ -136,12 +150,16 @@ public final class Main {
                 c.updateAge();
             }
 
+            // Sorting the year by the children ids
+            output.getIthYear(i).sortChildrenOutput();
+
             // Updating the input
             if (input.getAnnualChanges().size() > i) {
                 // Creating the observers
                 Changes observable = input.getAnnualChanges().get(i);
                 observable.addObserver(input);
                 observable.notify(input.getAnnualChanges().get(i));
+                strategy = observable.getStrategy();
             }
         }
 

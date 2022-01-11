@@ -19,9 +19,9 @@ public class Changes extends Observable {
     public Changes() {
     }
 
-    public Changes(double newSantaBudget, ArrayList<Gifts> newGifts,
-                   ArrayList<Children> newChildren,
-                   ArrayList<ChildrenUpdates> childrenUpdates, String strategy) {
+    public Changes(final double newSantaBudget, final ArrayList<Gifts> newGifts,
+                   final ArrayList<Children> newChildren,
+                   final ArrayList<ChildrenUpdates> childrenUpdates, final String strategy) {
         this.newSantaBudget = newSantaBudget;
         this.newGifts = newGifts;
         this.newChildren = newChildren;

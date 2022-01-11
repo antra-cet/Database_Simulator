@@ -1,7 +1,6 @@
 package santalists;
 
-import java.util.ArrayList;
-import java.util.Objects;
+import java.util.*;
 
 public class SantaList {
     /**
@@ -117,7 +116,7 @@ public class SantaList {
 
         // Iterating through the lst of gifts
         for (Gifts g : santaGiftsList) {
-            if (Objects.equals(gift, g.getCategory())) {
+            if (Objects.equals(gift, g.getCategory()) && g.getQuantity() > 0) {
                 // Changing the values if found a better gift
                 if (price == -1) {
                     price = g.getPrice();
@@ -145,6 +144,46 @@ public class SantaList {
         }
 
         return null;
+    }
+
+    public ArrayList<Children> getChildrenAfterId() {
+        ArrayList<Children> newArr = new ArrayList<>(children);
+        newArr.sort(new Comparator<Children>() {
+            @Override
+            public int compare(Children o1, Children o2) {
+                return Integer.compare(o1.getId(), o2.getId());
+            }
+        });
+
+        return newArr;
+    }
+
+    public ArrayList<Children> getChildrenAfterNiceScore() {
+        ArrayList<Children> newArr = new ArrayList<>(children);
+        newArr.sort(new Comparator<Children>() {
+            @Override
+            public int compare(Children o1, Children o2) {
+                if (o1.getAverageScore() == o2.getAverageScore()) {
+                    return Integer.compare(o1.getId(), o2.getId());
+                }
+
+                return (-1) * Double.compare(o1.getAverageScore(), o2.getAverageScore());
+            }
+        });
+
+        return newArr;
+    }
+
+    public ArrayList<Children> getChildrenAfterNiceCityScore() {
+        ArrayList<Children> newArr = new ArrayList<>(children);
+        newArr.sort(new Comparator<Children>() {
+            @Override
+            public int compare(Children o1, Children o2) {
+                return Integer.compare(o1.getId(), o2.getId());
+            }
+        });
+
+        return newArr;
     }
 
     /**

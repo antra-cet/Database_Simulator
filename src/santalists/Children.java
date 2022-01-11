@@ -290,6 +290,8 @@ public class Children {
                 sum += s;
             }
 
+            averageScore = sum / niceScore.size();
+
             // Verify if there is no niceScoreBonus
             if (niceScoreBonus == 0) {
                 return;
