@@ -15,7 +15,8 @@ public class Gifts {
     public Gifts() {
     }
 
-    public Gifts(String productName, double price, String category, int quantity) {
+    public Gifts(final String productName, final double price,
+                 final String category, final int quantity) {
         this.productName = productName;
         this.price = price;
         this.category = category;
@@ -86,7 +87,7 @@ public class Gifts {
      * Setter for quantity
      * @param quantity sets the quantity
      */
-    public void setQuantity(int quantity) {
+    public void setQuantity(final int quantity) {
         this.quantity = quantity;
     }
 

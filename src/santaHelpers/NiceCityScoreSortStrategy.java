@@ -1,6 +1,5 @@
 package santahelpers;
 
-import common.Constants;
 import enums.Cities;
 import santalists.Children;
 
@@ -8,8 +7,24 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
 
-public class NiceCityScoreSortStrategy implements SortStrategy{
-    private HashMap<String, CitiesAverage> citiesAverage = new HashMap<>();
+public class NiceCityScoreSortStrategy implements SortStrategy {
+    public HashMap<String, CitiesAverage> citiesAverage = new HashMap<>();
+
+    /**
+     * Singleton pattern
+     */
+    private static NiceCityScoreSortStrategy cityInstance = null;
+
+    /**
+     * Singleton instance setter
+     */
+    public static NiceCityScoreSortStrategy getInstance() {
+        if (cityInstance == null) {
+            cityInstance = new NiceCityScoreSortStrategy();
+        }
+
+        return cityInstance;
+    }
 
     /**
      * Constructors
@@ -52,10 +67,9 @@ public class NiceCityScoreSortStrategy implements SortStrategy{
      * */
     public void addAllCities() {
         for (Cities c : Cities.values()) {
-            citiesAverage.put(c.name(), new CitiesAverage(new ArrayList<>(), Constants.START_AVERAGE_SCORE));
+            citiesAverage.put(c.name(),
+                    new CitiesAverage(new CitiesAverage.CityBuilder(new ArrayList<>())));
         }
-
-        System.out.println(citiesAverage);
     }
 
     /**
@@ -78,10 +92,11 @@ public class NiceCityScoreSortStrategy implements SortStrategy{
     /**
      * Creates a new array of children that are sorted after nice
      * city score
+     * @param children the initial array
      * @return the sorted array
      */
     @Override
-    public ArrayList<Children> sortChildren(ArrayList<Children> children) {
+    public ArrayList<Children> sortChildren(final ArrayList<Children> children) {
         ArrayList<Children> newArr = new ArrayList<>(children);
         newArr.sort(new Comparator<Children>() {
             @Override

@@ -3,8 +3,15 @@ package main;
 import checker.Checker;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import common.Constants;
-import reader.*;
-import santahelpers.*;
+import reader.ChildrenOutput;
+import reader.ChildrenOutputList;
+import reader.GiftsOutput;
+import reader.Input;
+import reader.Output;
+import santahelpers.Elves;
+import santahelpers.IdSortStrategy;
+import santahelpers.NiceCityScoreSortStrategy;
+import santahelpers.NiceScoreSortStrategy;
 import santalists.Changes;
 import santalists.Children;
 import santalists.Gifts;
@@ -91,8 +98,9 @@ public final class Main {
             output.addYear(new ChildrenOutputList());
 
             // Creating a new hashmap for cities averages
-            NiceCityScoreSortStrategy cityScoreSortStrategy = new NiceCityScoreSortStrategy(new HashMap<>());
-            cityScoreSortStrategy.addAllCities();
+            NiceCityScoreSortStrategy instance = NiceCityScoreSortStrategy.getInstance();
+            instance = new NiceCityScoreSortStrategy(new HashMap<>());
+            instance.addAllCities();
 
             // Iterating through children to calculate the average scores and
             // to remove the young adults and calculating each average score
@@ -107,7 +115,7 @@ public final class Main {
                 } else {
                     c.calculateAverageNiceScore();
                     averageSum += c.getAverageScore();
-                    cityScoreSortStrategy.putScore(c.getAverageScore(),
+                    instance.putScore(c.getAverageScore(),
                             c.getCity().name());
                 }
             }
@@ -115,14 +123,15 @@ public final class Main {
             budgetUnit = input.getSantaBudget() / averageSum;
 
             // Calculating the average score for each city
-            cityScoreSortStrategy.calculateAllScores();
+            instance.calculateAllScores();
 
             // Changing the children array
             ArrayList<Children> sortedChildrenArray = switch (strategy) {
                 case "id" -> input.getInitialData().sortChildren(new IdSortStrategy());
-                case "niceScore" -> input.getInitialData().sortChildren(new NiceScoreSortStrategy());
+                case "niceScore"
+                        -> input.getInitialData().sortChildren(new NiceScoreSortStrategy());
                 case "niceScoreCity" ->
-                        input.getInitialData().sortChildren(cityScoreSortStrategy);
+                        input.getInitialData().sortChildren(instance);
                 default -> null;
             };
 

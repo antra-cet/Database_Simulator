@@ -40,6 +40,10 @@ public class ChildrenOutputList {
         this.children = children;
     }
 
+    /**
+     * Sorts at the final the output children
+     * based on their id's
+     */
     public void sortChildrenOutput() {
         children.sort(new Comparator<ChildrenOutput>() {
             @Override

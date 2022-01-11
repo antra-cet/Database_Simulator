@@ -5,9 +5,15 @@ import santalists.Children;
 import java.util.ArrayList;
 import java.util.Comparator;
 
-public class NiceScoreSortStrategy implements SortStrategy{
+public class NiceScoreSortStrategy implements SortStrategy {
+
+    /**
+     * Sorts the children list after the nice scores
+     * @param children the initial list
+     * @return the sorted array
+     */
     @Override
-    public ArrayList<Children> sortChildren(ArrayList<Children> children) {
+    public ArrayList<Children> sortChildren(final ArrayList<Children> children) {
         ArrayList<Children> newArr = new ArrayList<>(children);
         newArr.sort(new Comparator<Children>() {
             @Override

@@ -2,7 +2,6 @@ package reader;
 
 import enums.Cities;
 import santalists.Children;
-import santalists.Gifts;
 
 import java.util.ArrayList;
 

@@ -182,7 +182,7 @@ public class SantaList {
     /**
      * Method to apply the strategy on the list of children
      * @param */
-    public ArrayList<Children> sortChildren(SortStrategy sortStrategy) {
+    public ArrayList<Children> sortChildren(final SortStrategy sortStrategy) {
         return sortStrategy.sortChildren(children);
     }
 

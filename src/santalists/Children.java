@@ -216,7 +216,7 @@ public class Children {
      * Setter for elf
      * @param elf the elf
      */
-    public void setElf(Elves elf) {
+    public void setElf(final Elves elf) {
         this.elf = elf;
     }
 
@@ -298,7 +298,7 @@ public class Children {
             }
 
             // Calculate the average score after applying the bonus
-            averageScore += (averageScore * niceScoreBonus) / 100;
+            averageScore += (averageScore * niceScoreBonus) / Constants.PERCENT;
 
             // Setting the score to 10 if it exceeds it
             if (averageScore > Constants.START_AVERAGE_SCORE) {
@@ -325,7 +325,7 @@ public class Children {
             }
 
             // Calculate the average score after applying the bonus
-            averageScore += (averageScore * niceScoreBonus) / 100;
+            averageScore += (averageScore * niceScoreBonus) / Constants.PERCENT;
 
             // Setting the score to 10 if it exceeds it
             if (averageScore > Constants.START_AVERAGE_SCORE) {

@@ -1,0 +1,5 @@
+Starting audit...
+[ERROR] C:\Users\andra\Desktop\Anul 2\POO\Santa-Claus2\.\src\santahelpers\NiceCityScoreSortStrategy.java:11:43: Variable 'citiesAverage' must be private and have accessor methods. [VisibilityModifier]
+[ERROR] C:\Users\andra\Desktop\Anul 2\POO\Santa-Claus2\.\src\santahelpers\NiceCityScoreSortStrategy.java:18:5: Missing a Javadoc comment. [MissingJavadocMethod]
+Audit done.
+Checkstyle ends with 2 errors.

@@ -22,7 +22,7 @@ public class GiftsOutput {
         this.category = gift.getCategory();
     }
 
-    public GiftsOutput(String productName, double price, String category) {
+    public GiftsOutput(final String productName, final double price, final String category) {
         this.productName = productName;
         this.price = price;
         this.category = category;

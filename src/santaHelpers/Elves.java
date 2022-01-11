@@ -87,8 +87,8 @@ public class Elves {
      */
     @Override
     public String toString() {
-        return "Elves{" +
-                "type='" + type + '\'' +
-                '}';
+        return "Elves{"
+                + "type='" + type + '\''
+                + '}';
     }
 }

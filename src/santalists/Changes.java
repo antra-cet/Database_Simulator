@@ -109,7 +109,7 @@ public class Changes extends Observable {
      * Setter for new strategy
      * @param strategy sets the strategy
      */
-    public void setStrategy(String strategy) {
+    public void setStrategy(final String strategy) {
         this.strategy = strategy;
     }
 
