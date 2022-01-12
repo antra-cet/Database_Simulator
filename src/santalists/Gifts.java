@@ -92,14 +92,6 @@ public class Gifts {
     }
 
     /**
-     * Additional methods
-     */
-
-    public void updateQuantity() {
-        quantity--;
-    }
-
-    /**
      * toString
      */
     @Override

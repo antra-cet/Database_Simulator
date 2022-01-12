@@ -1,4 +1,4 @@
-package santahelpers;
+package santahelpers.sortstrategy;
 
 import santalists.Children;
 

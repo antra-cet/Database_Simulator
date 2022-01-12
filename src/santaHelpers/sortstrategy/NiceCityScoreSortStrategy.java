@@ -1,6 +1,7 @@
-package santahelpers;
+package santahelpers.sortstrategy;
 
 import enums.Cities;
+import santahelpers.CitiesAverage;
 import santalists.Children;
 
 import java.util.ArrayList;

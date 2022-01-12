@@ -1,14 +1,14 @@
-package santahelpers;
+package santahelpers.sortstrategy;
 
 import santalists.Children;
 
 import java.util.ArrayList;
 import java.util.Comparator;
 
-public class IdSortStrategy implements SortStrategy {
+public class NiceScoreSortStrategy implements SortStrategy {
 
     /**
-     * Sorts the children list after the id
+     * Sorts the children list after the nice scores
      * @param children the initial list
      * @return the sorted array
      */
@@ -18,7 +18,12 @@ public class IdSortStrategy implements SortStrategy {
         newArr.sort(new Comparator<Children>() {
             @Override
             public int compare(final Children o1, final Children o2) {
-                return Integer.compare(o1.getId(), o2.getId());
+                if (o1.getAverageScore() == o2.getAverageScore()) {
+                    return Integer.compare(o1.getId(), o2.getId());
+                }
+
+                return (-1) * Double.compare(o1.getAverageScore(),
+                        o2.getAverageScore());
             }
         });
 
