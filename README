@@ -1,0 +1,50 @@
+Proiect - Etapa 2 - Santa Claus is coming to ACS students, Bivolaru Andra 323 CA, ianuarie 2022
+
+*common
+    --Constants: added a few other constants to improve my style for the checkstyle (such as PERCENT being
+    the denominator for the subtraction of 100 or the ELF_PERCENTAGE to be easier to calculate the new budget
+    assigned by either pink or black elves)
+
+* enums
+    -- no change
+
+*main
+    --Main
+        -main() : contains the making of the new output directory, the following by reading each test from the
+        tests directory, and creating a new output file based on each test. In case the file was made, the we call the
+        sendGifts() method. At the end the checker is called to verify the results.
+
+        -sendGifts(): is the method that reads the input and process it. At the start, it creates a new input
+        variable of type Input. Then, it reads the values from the test input files with an object mapper
+        and then also writes the value in the output files. It creates the output and uses it to remember all the
+        annual children lists.
+                      It also creates a local variable named strategy to remember after each annual change
+        with which strategy should the children be considered for the gifts.
+                      After this, it starts iterating through the years and creating new children with received gifts
+        lists and also changing their annual budget based on the elf that was assigned to them. It also iterates
+        the first time through the children removing the young adults, calculating the sum of averages for the
+        budget unit and calculating the average score for cities. After that, it sorts the children array by
+        using the strategy design pattern.
+                      Then, it uses the command design pattern to find gifts for the children (either the best
+        gift for each child, either the cheapest from their favorite gift category). It then assigns these gifts and
+        adds the new child to the list of children for the output, updating their ages.
+                       At the end, the annual changes for that year are applied and then the output value is
+        written in the file.
+
+
+    -- Test : it is a test class calling the sendGifts() method on a particular input and writing the value
+    in the test.txt file
+
+* reader : contains files used for reading the input (such as Input) but also for writing the output (all the others).
+They have the format wanted for the output.
+
+*santahelpers : a new package that contains the Elf class, for each elf and also the sort strategy, devided into
+sort by id, by nice score and also by the nice score of a city. It also contains the CityAverage class that is
+used to remember in a hashmap a key-value pair (String-CityAverage) containing the list of nice scores from each
+child from that city and also the average calculated from the previously mentioned list. The CityAverage class uses
+a builder design pattern because not every time the average score is needed for the constructor and
+also to minimize the space in constructors.
+
+*santalists : contains the used data for the input such as the Children class and also the SantaList class. It also
+contains the Gift class and the classes for the changes (updates) from the annual changes. For the changes I used
+an observer design pattern and this package also implements a command design pattern used for finding certain gifts.

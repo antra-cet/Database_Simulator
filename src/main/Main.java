@@ -15,6 +15,12 @@ import santahelpers.sortstrategy.NiceScoreSortStrategy;
 import santalists.Changes;
 import santalists.Children;
 import santalists.Gifts;
+import santalists.SantaList;
+import santalists.giftcommand.Command;
+import santalists.giftcommand.FindGift;
+import santalists.giftcommand.FindNormalGiftCommand;
+import santalists.giftcommand.FindYellowElfGiftCommand;
+import santalists.giftcommand.GiftFinder;
 
 import java.io.File;
 import java.io.IOException;
@@ -135,6 +141,15 @@ public final class Main {
                 default -> null;
             };
 
+            // Declaring the commands for finding a gift for a
+            // normal child and another for a child that
+            // has a yellow elf assigned
+            FindGift giftFinder = new GiftFinder();
+            Command findNormal = new FindNormalGiftCommand(giftFinder);
+            Command findYellow = new FindYellowElfGiftCommand(giftFinder);
+
+            SantaList finder = new SantaList(findNormal, findYellow);
+
             // Iterating through the children
             assert sortedChildrenArray != null;
             for (Children c : sortedChildrenArray) {
@@ -149,7 +164,8 @@ public final class Main {
                     // Verifying if they still have enough money
                     if (assignedBudget > 0) {
                         // Finding the assigned gift for the child
-                        Gifts newGift = input.getInitialData().findGift(giftCategory);
+                        Gifts newGift = finder.findGift(giftCategory,
+                                input.getInitialData().getSantaGiftsList());
                         if (newGift != null && assignedBudget > newGift.getPrice()) {
                             newGift.setQuantity(newGift.getQuantity() - 1);
                             newChild.addReceivedGifts(new GiftsOutput(newGift));
@@ -162,9 +178,9 @@ public final class Main {
                 // Verifying if the child had a yellow elf assigned
                 if (c.getElf().getType().equals("yellow")
                         && newChild.getReceivedGifts().isEmpty()) {
-                    Gifts newGift =
-                            input.getInitialData().findYellowGift(c.getGiftsPreferences().get(0));
-                    if (newGift != null && newGift.getQuantity() > 0) {
+                    Gifts newGift = finder.findYellowGift(c.getGiftsPreferences().get(0),
+                            input.getInitialData().getSantaGiftsList());
+                    if (newGift != null) {
                         newGift.setQuantity(newGift.getQuantity() - 1);
                         newChild.addReceivedGifts(new GiftsOutput(newGift));
                     }

@@ -1,9 +1,9 @@
 package santalists;
 
 import santahelpers.sortstrategy.SortStrategy;
+import santalists.giftcommand.Command;
 
 import java.util.ArrayList;
-import java.util.Objects;
 
 public class SantaList {
     /**
@@ -13,6 +13,17 @@ public class SantaList {
      */
     private ArrayList<Children> children = new ArrayList<>();
     private ArrayList<Gifts> santaGiftsList = new ArrayList<>();
+
+    /**
+     * The two commands
+     */
+    private Command normalGiftCommand;
+    private Command yellowGiftCommand;
+
+    public SantaList(final Command normalGiftCommand, final Command yellowGiftCommand) {
+        this.normalGiftCommand = normalGiftCommand;
+        this.yellowGiftCommand = yellowGiftCommand;
+    }
 
     /**
      * Constructors
@@ -108,57 +119,21 @@ public class SantaList {
     }
 
     /**
-     * Finding the perfect gift for the child
-     * @param gift the category in which it should be
-     * @return the best gift for the child
+     * Applying the command pattern
      */
-    public Gifts findGift(final String gift) {
-        // Setting the two on standby values
-        double price = -1;
-        Gifts bestGift = null;
 
-        // Iterating through the lst of gifts
-        for (Gifts g : santaGiftsList) {
-            if (Objects.equals(gift, g.getCategory()) && g.getQuantity() > 0) {
-                // Changing the values if found a better gift
-                if (price == -1) {
-                    price = g.getPrice();
-                    bestGift = g;
-                } else if (price > g.getPrice()) {
-                    price = g.getPrice();
-                    bestGift = g;
-                }
-            }
-        }
-
-        return bestGift;
+    /**
+     * Finding the gift for a normal child
+     */
+    public Gifts findGift(final String gift,  final ArrayList<Gifts> santaGiftsList1) {
+        return this.normalGiftCommand.execute(gift, santaGiftsList1);
     }
 
     /**
-     * Finding the perfect gift for an elf to give to a child
-     * @param gift the category in which it should be
-     * @return the best gift for the child given by the yellow elf
+     * Finding a gift for a child with a yellow elf
      */
-    public Gifts findYellowGift(final String gift) {
-        // Setting the two on standby values
-        double price = -1;
-        Gifts bestGift = null;
-
-        // Iterating through the lst of gifts
-        for (Gifts g : santaGiftsList) {
-            if (Objects.equals(gift, g.getCategory())) {
-                // Changing the values if found a better gift
-                if (price == -1) {
-                    price = g.getPrice();
-                    bestGift = g;
-                } else if (price > g.getPrice()) {
-                    price = g.getPrice();
-                    bestGift = g;
-                }
-            }
-        }
-
-        return bestGift;
+    public Gifts findYellowGift(final String gift,  final ArrayList<Gifts> santaGiftsList1) {
+        return this.yellowGiftCommand.execute(gift, santaGiftsList1);
     }
 
     /**
